@@ -28,6 +28,8 @@ def sacar(*,limite_saques, saldo, valor_saque, numero_saques, limite, extrato):
 def gerar_extrato(extrato, saldo):
     print("************* Extrato *************")
     [print(operacao) for operacao in extrato]
+    if extrato == []:
+        print("Não foram realizadas movimentações")
     print (f"\nSaldo Atual R$: {saldo}")
     print("Obrigado por utilizar nossos serviços!!!")
     print("\n***********************************")
