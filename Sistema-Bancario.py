@@ -1,5 +1,3 @@
-
-
 def depositar(valor, saldo, extrato):
     if valor > 0:
         saldo += valor
@@ -37,7 +35,35 @@ def gerar_extrato(extrato, saldo):
 def mostrar_saldo(saldo):
     return(print(f"Seu saldo atual é: R$ {saldo}"))
 
+def criar_usuario(usuarios):
+    cpf = input("Informe o CPF (Somente numeros): ")
+    usuario = filtrar_usuario(cpf, usuarios)
 
+    if usuario:
+        print("\n@@@ Já existe usuario com esse CPF! @@@")
+        return
+    
+    nome = input("Informe o nome completo: ")
+    data_nascimento = ("Informe a data de nascimento (dd-mm-aaaa): ")
+    endereco = input("Informe o endereco (logradouro, nro - bairro -cidade/sigla estado): ")
+
+    usuarios.append({"nome": nome, "data_nascimento": data_nascimento, "cpf": cpf, "endereco": endereco})
+
+    print("*** Usuário criado com sucesso!!! ***")
+
+def filtrar_usuario(cpf, usuarios):
+    usuarios_filtrados = [usuario for usuario in usuarios if usuario["cpf"]==cpf]
+    return usuarios_filtrados[0] if usuarios_filtrados else None
+
+def criar_conta(agencia, numero_conta, usuarios):
+    cpf = input("Informe o cpf do usuario: ")
+    usuario = filtrar_usuario(cpf, usuarios)
+
+    if usuario:
+        print("*** Conta criada com sucesso ***")
+        return {"agencia": agencia, "numero_conta": numero_conta, "usuario": usuario}
+    
+    print("\n@@@ Usuario nao encontardo, fluxo de criacao de conta encerrado")
 
 def main():
     menu = """
@@ -46,6 +72,8 @@ def main():
     [2] Sacar
     [3] Extrato
     [4] Consultar Saldo
+    [5] Criar novo usuario
+    [6] Criar nova conta
     [0] Sair
 
     => """
@@ -54,7 +82,10 @@ def main():
     limite = 500
     extrato = []
     numero_saques = 0
+    usuarios = []
+    contas = []
     LIMITE_SAQUES = 3
+    AGENCIA = "0001"
 
     while True:
         opcao = input(menu)
@@ -79,15 +110,16 @@ def main():
         if opcao == "4":
             mostrar_saldo(saldo)  
 
+        if opcao == "5":
+            criar_usuario(usuarios) 
+
+        if opcao == "6":
+            numero_conta = len(contas) + 1
+            conta = criar_conta(AGENCIA, numero_conta, usuarios)
+            if conta:
+                contas.append(conta) 
+
         if opcao == "0":
             break
 
 main()
-
-
-
-
-
-
-
-
